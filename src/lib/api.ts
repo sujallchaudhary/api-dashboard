@@ -30,7 +30,6 @@ const apiRequest = async (url: string, options: RequestInit = {}) => {
   const isFormData = options.body instanceof FormData;
   
   const defaultOptions: RequestInit = {
-    credentials: 'include', // Always include cookies
     headers: createHeaders(options.headers as Record<string, string>, isFormData),
     ...options,
   };
