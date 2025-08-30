@@ -32,9 +32,9 @@ export function ProjectsManagement({ projects, onAddProject, onUpdateProject, on
   const [error, setError] = useState('');
   
   const [formData, setFormData] = useState({
-    name: '',
+    title: '',
     description: '',
-    thumbnail: '',
+    image: '',
     demoLink: '',
     sourceCodeLink: ''
   });
@@ -44,9 +44,9 @@ export function ProjectsManagement({ projects, onAddProject, onUpdateProject, on
 
   const resetForm = () => {
     setFormData({
-      name: '',
+      title: '',
       description: '',
-      thumbnail: '',
+      image: '',
       demoLink: '',
       sourceCodeLink: ''
     });
@@ -64,9 +64,9 @@ export function ProjectsManagement({ projects, onAddProject, onUpdateProject, on
     if (project) {
       setEditingProject(project);
       setFormData({
-        name: project.name,
+        title: project.name,
         description: project.description,
-        thumbnail: project.thumbnail,
+        image: project.thumbnail,
         demoLink: project.demoLink,
         sourceCodeLink: project.sourceCodeLink
       });
@@ -95,12 +95,12 @@ export function ProjectsManagement({ projects, onAddProject, onUpdateProject, on
       const previewUrl = createPreviewUrl(file);
       setThumbnailPreview(previewUrl);
       // Clear the URL field when file is selected
-      setFormData({ ...formData, thumbnail: '' });
+      setFormData({ ...formData, image: '' });
     }
   };
 
   const handleUrlChange = (url: string) => {
-    setFormData({ ...formData, thumbnail: url });
+    setFormData({ ...formData, image: url });
     // Clean up previous preview URL if it's a blob URL
     if (thumbnailPreview && thumbnailPreview.startsWith('blob:')) {
       revokePreviewUrl(thumbnailPreview);
@@ -112,7 +112,7 @@ export function ProjectsManagement({ projects, onAddProject, onUpdateProject, on
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     
-    if (!formData.name || !formData.description) {
+    if (!formData.title || !formData.description) {
       setError('Please fill in all required fields');
       return;
     }
@@ -123,17 +123,17 @@ export function ProjectsManagement({ projects, onAddProject, onUpdateProject, on
     try {
       // Create FormData and include all fields
       const formDataToSend = new FormData();
-      formDataToSend.append('name', formData.name);
+      formDataToSend.append('title', formData.title);
       formDataToSend.append('description', formData.description);
       formDataToSend.append('demoLink', formData.demoLink);
       formDataToSend.append('sourceCodeLink', formData.sourceCodeLink);
       
       // If a file is selected, append it as binary data
       if (thumbnailFile) {
-        formDataToSend.append('thumbnail', thumbnailFile);
-      } else if (formData.thumbnail) {
+        formDataToSend.append('image', thumbnailFile);
+      } else if (formData.image) {
         // If URL is provided instead of file
-        formDataToSend.append('thumbnailUrl', formData.thumbnail);
+        formDataToSend.append('image', formData.image);
       }
 
       if (editingProject) {
@@ -200,12 +200,12 @@ export function ProjectsManagement({ projects, onAddProject, onUpdateProject, on
                 )}
                 
                 <div className="space-y-2">
-                  <Label htmlFor="name">Project Name *</Label>
+                  <Label htmlFor="title">Project Title *</Label>
                   <Input
-                    id="name"
-                    value={formData.name}
-                    onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                    placeholder="Enter project name"
+                    id="title"
+                    value={formData.title}
+                    onChange={(e) => setFormData({ ...formData, title: e.target.value })}
+                    placeholder="Enter project title"
                     required
                   />
                 </div>
@@ -246,7 +246,7 @@ export function ProjectsManagement({ projects, onAddProject, onUpdateProject, on
                       </Label>
                       <Input
                         id="thumbnailUrl"
-                        value={formData.thumbnail}
+                        value={formData.image}
                         onChange={(e) => handleUrlChange(e.target.value)}
                         placeholder="https://example.com/image.jpg"
                         className="mt-1"
@@ -326,7 +326,7 @@ export function ProjectsManagement({ projects, onAddProject, onUpdateProject, on
             <Table>
               <TableHeader>
                 <TableRow>
-                  <TableHead>Name</TableHead>
+                  <TableHead>Title</TableHead>
                   <TableHead>Description</TableHead>
                   <TableHead>Links</TableHead>
                   <TableHead className="w-[100px]">Actions</TableHead>

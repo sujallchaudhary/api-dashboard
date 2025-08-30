@@ -33,7 +33,7 @@ interface UrlManagementProps {
   currentPage: number;
   onPageChange: (page: number) => void;
   onAddUrl: (url: { fullUrl: string }) => Promise<void>;
-  onUpdateUrl: (id: string, url: { fullUrl: string; shortCode: string }) => Promise<void>;
+  onUpdateUrl: (id: string, url: { fullUrl: string; shortenUrl: string }) => Promise<void>;
   onDeleteUrl: (id: string) => Promise<void>;
 }
 
@@ -46,7 +46,7 @@ export function UrlManagement({ urls, pagination, currentPage, onPageChange, onA
   
   const [formData, setFormData] = useState({
     fullUrl: '',
-    shortCode: ''
+    shortenUrl: ''
   });
 
   // Helper function to format date/time
@@ -70,7 +70,7 @@ export function UrlManagement({ urls, pagination, currentPage, onPageChange, onA
   const resetForm = () => {
     setFormData({
       fullUrl: '',
-      shortCode: ''
+      shortenUrl: ''
     });
     setEditingUrl(null);
     setError('');
@@ -81,7 +81,7 @@ export function UrlManagement({ urls, pagination, currentPage, onPageChange, onA
       setEditingUrl(url);
       setFormData({
         fullUrl: url.fullUrl,
-        shortCode: url.shortenUrl
+        shortenUrl: url.shortenUrl
       });
     } else {
       resetForm();
@@ -203,11 +203,11 @@ export function UrlManagement({ urls, pagination, currentPage, onPageChange, onA
                 
                 {editingUrl && (
                   <div className="space-y-2">
-                    <Label htmlFor="shortCode">Short Code</Label>
+                    <Label htmlFor="shortenUrl">Short Code</Label>
                     <Input
-                      id="shortCode"
-                      value={formData.shortCode}
-                      onChange={(e) => setFormData({ ...formData, shortCode: e.target.value })}
+                      id="shortenUrl"
+                      value={formData.shortenUrl}
+                      onChange={(e) => setFormData({ ...formData, shortenUrl: e.target.value })}
                       placeholder="Custom short code"
                     />
                   </div>
